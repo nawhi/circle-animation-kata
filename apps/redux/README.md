@@ -1,3 +1,7 @@
+## Redux With Issues
+
+This package shows a plain Redux implementation of the animations app.
+
 ## Getting Started
 
 First, run the development server:
