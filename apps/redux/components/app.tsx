@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import ShapeEditor from "./shape-editor";
+import KeyframesThumbnails from "./keyframes-thumbnails";
 
 /**
  * v0 by Vercel.
@@ -13,31 +14,7 @@ export default function App() {
         <div className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-zinc-100/40 px-6 dark:bg-zinc-800/40">
           <h1 className="font-semibold text-lg md:text-2xl">Storyboard</h1>
         </div>
-        <div className="flex overflow-x-auto py-4 px-6 border-b bg-zinc-100/40 dark:bg-zinc-800/40">
-          <div className="flex items-center gap-8">
-            <img
-              alt="Keyframe 1"
-              className="aspect-square rounded-md object-cover"
-              height="80"
-              src="/placeholder.svg"
-              width="80"
-            />
-            <img
-              alt="Keyframe 2"
-              className="aspect-square rounded-md object-cover"
-              height="80"
-              src="/placeholder.svg"
-              width="80"
-            />
-            <img
-              alt="Keyframe 3"
-              className="aspect-square rounded-md object-cover"
-              height="80"
-              src="/placeholder.svg"
-              width="80"
-            />
-          </div>
-        </div>
+        <KeyframesThumbnails />
         <div className="flex-1 overflow-auto p-4 md:p-6">
           <div className="border shadow-sm rounded-lg h-full w-full">
             <img

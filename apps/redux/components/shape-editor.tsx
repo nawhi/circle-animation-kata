@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import type { Shape } from "@/lib/types";
+import { chooseNextEntityNumber } from "../store/id";
 
 function ShapeEditor(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -90,14 +91,11 @@ function ShapeEditor(): JSX.Element {
         className="gap-2"
         variant="outline"
         onClick={() => {
-          const numbers = shapes.map(
-            (shape) => parseInt(shape.id.replace("shape", ""), 10) || 0,
-          );
-          const id = (numbers.length ? Math.max(...numbers) : 0) + 1;
+          const entityNum = chooseNextEntityNumber(shapes, "shape");
           dispatch(
             actions.shapes.addOne({
-              id: `shape${id}`,
-              displayName: `Shape ${id}`,
+              id: `shape${entityNum}`,
+              displayName: `Shape ${entityNum}`,
               radius: 15,
               fill: "#ffffff",
               stroke: "#000000",

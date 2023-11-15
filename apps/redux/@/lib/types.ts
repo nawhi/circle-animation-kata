@@ -1,5 +1,5 @@
-export type ShapeId = `shape${string}`;
-export type KeyframeId = `keyframe${string}`;
+export type ShapeId = `shape${number}`;
+export type KeyframeId = `keyframe${number}`;
 
 export interface XY {
   x: number;

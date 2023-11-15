@@ -27,9 +27,9 @@ const keyframesSlice = createSlice({
   name: "keyframes",
   initialState: keyframesEntityAdapter.getInitialState(),
   reducers: {
-    addKeyframe: keyframesEntityAdapter.addOne,
-    removeKeyframe: keyframesEntityAdapter.removeOne,
-    updateKeyframe: keyframesEntityAdapter.updateOne,
+    addOne: keyframesEntityAdapter.addOne,
+    removeOne: keyframesEntityAdapter.removeOne,
+    updateOne: keyframesEntityAdapter.updateOne,
   },
 });
 
@@ -37,6 +37,40 @@ const store = configureStore({
   reducer: {
     shapes: shapesSlice.reducer,
     keyframes: keyframesSlice.reducer,
+  },
+  preloadedState: {
+    shapes: {
+      ids: ["shape1"],
+      entities: {
+        shape1: {
+          id: "shape1",
+          displayName: "Shape 1",
+          radius: 50,
+          fill: "#000000",
+          stroke: "#ffffff",
+        },
+      },
+    },
+    keyframes: {
+      ids: ["keyframe1"],
+      entities: {
+        keyframe1: {
+          id: "keyframe1",
+          time: 0,
+          entries: [
+            {
+              shape: "shape1",
+              center: { x: 100, y: 100 },
+              overrides: {
+                radius: 50,
+                fill: "#000000",
+                stroke: "#ffffff",
+              },
+            },
+          ],
+        },
+      },
+    },
   },
 });
 
