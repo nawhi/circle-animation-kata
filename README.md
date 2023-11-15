@@ -1,27 +1,35 @@
-# Frontend Object Relations
+# Circle Animation Kata (Work in Progress)
+
+## Work in Progress
+This kata isn't ready for use yet. Check back soon.
+
+----------
 
 ## The Problem
 
 Relational databases natively support "cascade delete": in other words, if you delete an entity, its references in other parts of the database will be deleted too.
 
-This is very helpful in more complex applications.
+This is very helpful in more complex applications... like the one we have here.
 
-How can we replicate it in pure frontend state?
+How can we replicate this behaviour cleanly in pure frontend state?
 
 This repo has an example animation-creation app which works like this:
 
-- Users can add shapes globally.
-- Users can position the shapes on a canvas and add keyframes which will be interpolated.
+- Users can add circles to a global store on the right panel.
+- Users can position the circles on a canvas and add arbitrary numbers of keyframes, which specify an interpolation position for a given time.
+- We imagine there is a render button somewhere that creates the interpolations and produces the finished animation (implementing that is another kata.)
 
-Naturally, this requires a data model with lots of relations!
+The main behaviour constraint that makes design hard is that when a user deletes a shape from the global store, _it should be automatically removed from all keyframes._
 
-The `apps` directory includes a few different ways to implement this:
+With this in mind, can you architect the app in a way that makes this behaviour automatic?
 
-## Plain Redux
+In other words, were we to scale the app to adding other entity relationships in future (e.g. an interpolation mode for a given circle between keyframes), what's the architecture that requires the minimum amount of code to ensure our circles are still cascade-deleted properly from the right hand panel?
 
-`apps/redux` shows how this is implemented using just Redux and Redux Toolkit.
+## Starter Code
 
-This is not a great implementation: searching for all the relations on delete is basically manual.
+In `apps/redux` the app is implemented using just Redux and Redux Toolkit. This is your starting point.
+
+You may wish to stick with Redux or migrate to an alternative state management framework.
 
 ## Credits
 
