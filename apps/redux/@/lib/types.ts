@@ -1,6 +1,10 @@
 export type ShapeId = `shape${number}`;
 export type KeyframeId = `keyframe${number}`;
 
+export const isShapeId = (id: string): id is ShapeId => id.startsWith("shape");
+export const isKeyframeId = (id: string): id is KeyframeId =>
+  id.startsWith("keyframe");
+
 export interface XY {
   x: number;
   y: number;

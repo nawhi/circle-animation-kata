@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import type { Keyframe, KeyframeId, Shape } from "@/lib/types";
+import type {Keyframe, KeyframeId, Shape, ShapeId, XY} from "@/lib/types";
 
 const shapesEntityAdapter = createEntityAdapter<Shape>();
 const keyframesEntityAdapter = createEntityAdapter<Keyframe>({
@@ -30,6 +30,18 @@ const keyframesSlice = createSlice({
     addOne: keyframesEntityAdapter.addOne,
     removeOne: keyframesEntityAdapter.removeOne,
     updateOne: keyframesEntityAdapter.updateOne,
+    addShape: (
+        state,
+        { payload }: PayloadAction<{ keyframeId: KeyframeId; shapeId: ShapeId, position: XY }>,
+        ) => {
+        const keyframe = state.entities[payload.keyframeId];
+        if (!keyframe) return;
+        keyframe.entries.push({
+            shape: payload.shapeId,
+            center: { x: 0, y: 0 },
+            overrides: {},
+        });
+        }
   },
 });
 
