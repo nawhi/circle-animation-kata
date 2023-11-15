@@ -21,7 +21,6 @@ export interface Shape {
 export interface KeyframeEntry {
   shape: ShapeId;
   center: XY;
-  overrides: Partial<Shape>;
 }
 
 export interface Keyframe {

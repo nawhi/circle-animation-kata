@@ -17,6 +17,8 @@ import { Plus } from "lucide-react";
 import type { Shape } from "@/lib/types";
 import { chooseNextEntityNumber } from "../store/id";
 import { Label } from "@/components/ui/label";
+import { MIN_RADIUS, MAX_RADIUS } from "../store/constants";
+import { makeDefaultShape } from "../store/factories";
 
 function ShapeEditor(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -56,6 +58,8 @@ function ShapeEditor(): JSX.Element {
                       placeholder="number"
                       type="number"
                       value={shape.radius}
+                      min={MIN_RADIUS}
+                      max={MAX_RADIUS}
                       onChange={(e) =>
                         update({ radius: parseInt(e.target.value, 10) })
                       }
@@ -93,15 +97,7 @@ function ShapeEditor(): JSX.Element {
         variant="outline"
         onClick={() => {
           const entityNum = chooseNextEntityNumber(shapes, "shape");
-          dispatch(
-            actions.shapes.addOne({
-              id: `shape${entityNum}`,
-              displayName: `Shape ${entityNum}`,
-              radius: 15,
-              fill: "#ffffff",
-              stroke: "#000000",
-            }),
-          );
+          dispatch(actions.shapes.addOne(makeDefaultShape(entityNum)));
         }}
       >
         <Plus />

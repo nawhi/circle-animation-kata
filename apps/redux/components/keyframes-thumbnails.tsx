@@ -10,6 +10,7 @@ import { Plus } from "lucide-react";
 import { chooseNextEntityNumber } from "../store/id";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../store/constants";
 
 function KeyframeThumbnail({ id }: { id: string }): JSX.Element {
   const kf = useAppSelector((state) =>
@@ -21,7 +22,7 @@ function KeyframeThumbnail({ id }: { id: string }): JSX.Element {
   return (
     <svg
       className="w-full h-full"
-      viewBox="0 0 1000 1000"
+      viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
       xmlns="http://www.w3.org/2000/svg"
     >
       {entries.map((entry) => {
