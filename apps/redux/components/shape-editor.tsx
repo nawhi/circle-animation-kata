@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import type { Shape } from "@/lib/types";
 import { chooseNextEntityNumber } from "../store/id";
+import { Label } from "@/components/ui/label";
 
 function ShapeEditor(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -41,15 +42,15 @@ function ShapeEditor(): JSX.Element {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="grid gap-2 p-4">
-                  <label>
+                  <Label>
                     Name
                     <Input
                       type="text"
                       value={shape.displayName}
                       onChange={(e) => update({ displayName: e.target.value })}
                     />
-                  </label>
-                  <label>
+                  </Label>
+                  <Label>
                     Radius
                     <Input
                       placeholder="number"
@@ -59,10 +60,10 @@ function ShapeEditor(): JSX.Element {
                         update({ radius: parseInt(e.target.value, 10) })
                       }
                     />
-                  </label>
+                  </Label>
                   {(["fill", "stroke"] as const).map((prop) => (
                     <div key={prop}>
-                      <label>
+                      <Label>
                         {(prop[0] ?? "").toUpperCase() + prop.slice(1)} Color
                         <Input
                           className="h-10"
@@ -70,12 +71,12 @@ function ShapeEditor(): JSX.Element {
                           value={shape[prop]}
                           onChange={(e) => update({ [prop]: e.target.value })}
                         />
-                      </label>
+                      </Label>
                     </div>
                   ))}
                   <Button
                     variant="ghost"
-                    className={"mt-3"}
+                    className="mt-3"
                     onClick={() => dispatch(actions.shapes.removeOne(shape.id))}
                   >
                     Delete

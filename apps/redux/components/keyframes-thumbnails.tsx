@@ -47,17 +47,20 @@ function KeyframesThumbnails(): JSX.Element {
     (state) => state.app.selectedKeyframeId,
   );
   const dispatch = useAppDispatch();
+
   return (
     <div className="flex overflow-x-auto py-4 px-6 border-b bg-zinc-100/40 dark:bg-zinc-800/40 min-h-[80px]">
       <RadioGroup className="flex items-center gap-8">
         {keyframes.map((kf) => (
           <Fragment key={kf.id}>
-            <RadioGroupItem value={kf.id} className={"sr-only"} />
+            <RadioGroupItem value={kf.id} className="sr-only" />
             <Button
               variant="outline"
               className={cn(
                 "w-[80px] h-[80px] border-2 rounded-md flex align-center justify-center",
-                kf.id === selectedKeyframeId ? "border-primary" : "border-muted",
+                kf.id === selectedKeyframeId
+                  ? "border-primary"
+                  : "border-muted",
               )}
               onClick={() => dispatch(actions.app.selectKeyframe(kf.id))}
             >

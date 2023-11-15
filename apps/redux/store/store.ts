@@ -36,7 +36,7 @@ const keyframesSlice = createSlice({
 const appSlice = createSlice({
   name: "app",
   initialState: {
-    selectedKeyframeId: null as KeyframeId | null,
+    selectedKeyframeId: "keyframe1" as KeyframeId | null,
   },
   reducers: {
     selectKeyframe: (state, { payload }: PayloadAction<KeyframeId | null>) => {
