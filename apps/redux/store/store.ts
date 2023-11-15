@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 type ShapeId = `shape-${string}`;
 type CircleId = `shape-circle-${string}`;
@@ -87,5 +88,18 @@ export const actions = {
   shapes: shapesSlice.actions,
   keyframes: keyframesSlice.actions,
 };
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export const selectors = {
+  shapes: shapesEntityAdapter.getSelectors<RootState>((state) => state.shapes),
+  keyframes: keyframesEntityAdapter.getSelectors<RootState>(
+    (state) => state.keyframes,
+  ),
+};
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export default store;
