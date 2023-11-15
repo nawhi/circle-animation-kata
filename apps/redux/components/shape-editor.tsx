@@ -1,84 +1,102 @@
 import React from "react";
-import { Button } from "react-daisyui";
-import Link from "next/link";
+import {
+  actions,
+  selectors,
+  useAppDispatch,
+  useAppSelector,
+} from "../store/store";
+import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
+import { PlusCircle } from "lucide-react";
+import type { Shape, ShapeId } from "@/lib/types";
 
-interface ShapeEditorProps {}
-
-const ShapeEditor = ({}: ShapeEditorProps): JSX.Element => {
+function ShapeEditor(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const shapes = useAppSelector(selectors.shapes.selectAll);
   return (
-    <>
-      <div className="flex h-[60px] items-center border-b px-6">
-        <span className="font-semibold">Shapes</span>
-        <Button className="ml-auto" size="sm">
-          Add
+    <div className="h-full flex flex-col gap-4 p-4">
+      <div className="flex justify-between">
+        <h4 className="text-lg font-semibold">Shapes</h4>
+        <Button
+          size="sm"
+          variant="destructive"
+          onClick={() => {
+            const curShapeMaxId = Math.max(
+              ...shapes.map((shape) =>
+                parseInt(shape.id.replace("shape", ""), 10),
+              ),
+            );
+            dispatch(
+              actions.shapes.addOne({
+                id: `shape${curShapeMaxId + 1}`,
+                radius: 15,
+                fill: "#ffffff",
+                stroke: "#000000",
+              }),
+            );
+          }}
+        >
+          <PlusCircle />
         </Button>
       </div>
-      <div className="flex-1 overflow-auto py-2">
-        <nav className="grid items-start px-4 text-sm font-medium">
-          <Link
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-500 transition-all hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-            href="#"
+      {shapes.map((shape) => {
+        const update = (changes: Partial<Shape>) =>
+          dispatch(actions.shapes.updateOne({ id: shape.id, changes }));
+        return (
+          <Accordion
+            key={shape.id}
+            className="w-full border rounded-md"
+            collapsible
+            type="single"
           >
-            <svg
-              className=" h-4 w-4"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect height="18" rx="2" width="18" x="3" y="3" />
-            </svg>
-            Square
-          </Link>
-          <Link
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-500 transition-all hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-            href="#"
-          >
-            <svg
-              className=" h-4 w-4"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="12" cy="12" r="10" />
-            </svg>
-            Circle
-          </Link>
-          <Link
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-500 transition-all hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-            href="#"
-          >
-            <svg
-              className=" h-4 w-4"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-            </svg>
-            Triangle
-          </Link>
-        </nav>
-      </div>
-    </>
+            <AccordionItem value="shape1">
+              <AccordionTrigger className="flex justify-between items-center gap-2 py-2 px-4">
+                <div className="flex items-center gap-2">
+                  <span>Shape 1</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid gap-2 p-4">
+                  <div className="flex gap-1">
+                    <label>
+                      Radius
+                      <Input
+                        placeholder="number"
+                        type="number"
+                        value={shape.radius}
+                        onChange={(e) =>
+                          update({ radius: parseInt(e.target.value, 10) })
+                        }
+                      />
+                    </label>
+                  </div>
+                  {(["fill", "stroke"] as const).map((prop) => (
+                    <div key={prop}>
+                      <label>
+                        {(prop[0] ?? "").toUpperCase() + prop.slice(1)} Color
+                        <Input
+                          className="h-10"
+                          type="color"
+                          value={shape[prop]}
+                          onChange={(e) => update({ [prop]: e.target.value })}
+                        />
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        );
+      })}
+    </div>
   );
-};
+}
 
 export default ShapeEditor;

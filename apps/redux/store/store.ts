@@ -3,54 +3,10 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-
-type ShapeId = `shape-${string}`;
-type CircleId = `shape-circle-${string}`;
-type PolygonId = `shape-polygon-${string}`;
-type KeyframeId = `keyframe-${string}`;
-
-interface XY {
-  x: number;
-  y: number;
-}
-
-interface BaseShape {
-  id: ShapeId;
-  fill: string;
-  stroke: string;
-}
-
-interface Circle extends BaseShape {
-  id: CircleId;
-  type: "circle";
-  radius: number;
-}
-
-interface Polygon extends BaseShape {
-  id: PolygonId;
-  type: "polygon";
-  points: XY[];
-}
-
-type Shape = Circle | Polygon;
-
-interface KeyframeEntry {
-  shape: ShapeId;
-  center: XY;
-  overrides: Partial<Shape>;
-}
-
-interface Keyframe {
-  id: KeyframeId;
-  time: number;
-  entries: KeyframeEntry[];
-}
-
-interface StoreState {
-  shapes: Shape[];
-  keyframes: Keyframe[];
-}
+import type { TypedUseSelectorHook } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import type { Keyframe, Shape } from "@/lib/types";
+import { pick } from "lodash-es";
 
 const shapesEntityAdapter = createEntityAdapter<Shape>();
 const keyframesEntityAdapter = createEntityAdapter<Keyframe>({
@@ -61,9 +17,9 @@ const shapesSlice = createSlice({
   name: "shapes",
   initialState: shapesEntityAdapter.getInitialState(),
   reducers: {
-    addShape: shapesEntityAdapter.addOne,
-    removeShape: shapesEntityAdapter.removeOne,
-    updateShape: shapesEntityAdapter.updateOne,
+    addOne: shapesEntityAdapter.addOne,
+    updateOne: shapesEntityAdapter.updateOne,
+    removeOne: shapesEntityAdapter.removeOne,
   },
 });
 

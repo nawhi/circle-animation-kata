@@ -39,8 +39,10 @@ module.exports = {
   rules: {
     "import/no-default-export": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
+    "react/jsx-sort-props": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/unbound-method": "off",
-
   },
 };
