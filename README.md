@@ -25,5 +25,5 @@ This is not a great implementation: searching for all the relations on delete is
 
 ## AI Disclosure
 
-1. The UI was generated using v0: https://v0.dev/r/KDK0YL4SCXL
-2. [Github Copilot](https://github.com/features/copilot), [Cursor.sh](https://cursor.sh/) and [Claude.ai](https://claude.ai/) were used during development
+- [Github Copilot](https://github.com/features/copilot), [Cursor.sh](https://cursor.sh/), [Claude.ai](https://claude.ai/), and [v0](https://v0.dev) were used during development.
+- Where UI was generated using [v0](https://v0.dev/) it is marked as such in a comment.
