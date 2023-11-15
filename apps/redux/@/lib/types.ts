@@ -8,6 +8,7 @@ export interface XY {
 
 export interface Shape {
   id: ShapeId;
+  displayName: string;
   radius: number;
   fill: string;
   stroke: string;
