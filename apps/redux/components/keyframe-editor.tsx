@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import type { Keyframe } from "@/lib/types";
 import { XY, isShapeId } from "@/lib/types";
 import { log } from "console";
+import { CANVAS_ASPECT_RATIO, CANVAS_STYLE } from "../store/constants";
 
 function ShapeThumbnail({ id }: { id: string }): JSX.Element | null {
   const shape = useAppSelector((state) =>
@@ -114,8 +115,9 @@ function KeyframeEditor(): JSX.Element {
   const update = (changes: Partial<Keyframe>) =>
     dispatch(actions.keyframes.updateOne({ id: keyframe.id, changes }));
 
+
   return (
-    <div className="flex flex-wrap justify-between items-start p-6">
+    <div className="flex gap-12 justify-between items-start p-6">
       <div className="flex flex-col gap-4 items-start mb-6">
         <h2 className="text-xl font-bold">
           Keyframe #{keyframe.id.replace("keyframe", "")}
@@ -151,7 +153,8 @@ function KeyframeEditor(): JSX.Element {
       </div>
       <div
         ref={canvasRef}
-        className="w-[800px] h-[500px] border rounded-md bg-white dark:bg-zinc-800 relative"
+        className="w-3/4 h-full border rounded-md bg-white dark:bg-zinc-800 relative max-h-[70vh]"
+        style={CANVAS_STYLE}
         onDragOver={(e) => {
           e.preventDefault();
         }}
@@ -172,10 +175,11 @@ function KeyframeEditor(): JSX.Element {
           }
         }}
       >
-        <div className="m-4 text-center text-zinc-500 dark:text-zinc-400">
-          {keyframe.entries.length === 0 &&
-            "Drag and reposition shapes here..."}
-        </div>
+        {keyframe.entries.length === 0 && (
+          <div className="m-4 text-zinc-500 dark:text-zinc-400 w-full h-full flex items-center justify-center">
+            Drag and reposition shapes here...
+          </div>
+        )}
         {keyframe.entries.map((entry, idx) => {
           const shape = shapesEntities[entry.shape];
           return shape ? (
