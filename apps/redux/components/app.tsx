@@ -2,6 +2,7 @@
 import React from "react";
 import ShapeEditor from "./shape-editor";
 import KeyframesThumbnails from "./keyframes-thumbnails";
+import KeyframeEditor from "./keyframe-editor";
 
 /**
  * v0 by Vercel.
@@ -17,13 +18,7 @@ export default function App() {
         <KeyframesThumbnails />
         <div className="flex-1 overflow-auto p-4 md:p-6">
           <div className="border shadow-sm rounded-lg h-full w-full">
-            <img
-              alt="Keyframe Editor"
-              className="aspect-[4/3] rounded-md object-cover"
-              height="600"
-              src="/placeholder.svg"
-              width="800"
-            />
+            <KeyframeEditor />
           </div>
         </div>
       </div>

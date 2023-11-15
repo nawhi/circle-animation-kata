@@ -2,11 +2,11 @@ import {
   configureStore,
   createEntityAdapter,
   createSlice,
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import type { Keyframe, Shape } from "@/lib/types";
-import { pick } from "lodash-es";
+import type { Keyframe, KeyframeId, Shape } from "@/lib/types";
 
 const shapesEntityAdapter = createEntityAdapter<Shape>();
 const keyframesEntityAdapter = createEntityAdapter<Keyframe>({
@@ -33,10 +33,23 @@ const keyframesSlice = createSlice({
   },
 });
 
+const appSlice = createSlice({
+  name: "app",
+  initialState: {
+    selectedKeyframeId: null as KeyframeId | null,
+  },
+  reducers: {
+    selectKeyframe: (state, { payload }: PayloadAction<KeyframeId | null>) => {
+      state.selectedKeyframeId = payload;
+    },
+  },
+});
+
 const store = configureStore({
   reducer: {
     shapes: shapesSlice.reducer,
     keyframes: keyframesSlice.reducer,
+    app: appSlice.reducer,
   },
   preloadedState: {
     shapes: {
@@ -77,6 +90,7 @@ const store = configureStore({
 export const actions = {
   shapes: shapesSlice.actions,
   keyframes: keyframesSlice.actions,
+  app: appSlice.actions,
 };
 
 export type RootState = ReturnType<typeof store.getState>;

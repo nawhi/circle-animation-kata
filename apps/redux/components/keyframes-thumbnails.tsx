@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   actions,
   selectors,
@@ -8,6 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { chooseNextEntityNumber } from "../store/id";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { cn } from "@/lib/utils";
 
 function KeyframeThumbnail({ id }: { id: string }): JSX.Element {
   const kf = useAppSelector((state) =>
@@ -41,17 +43,27 @@ function KeyframeThumbnail({ id }: { id: string }): JSX.Element {
 
 function KeyframesThumbnails(): JSX.Element {
   const keyframes = useAppSelector(selectors.keyframes.selectAll);
+  const selectedKeyframeId = useAppSelector(
+    (state) => state.app.selectedKeyframeId,
+  );
   const dispatch = useAppDispatch();
   return (
     <div className="flex overflow-x-auto py-4 px-6 border-b bg-zinc-100/40 dark:bg-zinc-800/40 min-h-[80px]">
-      <div className="flex items-center gap-8">
+      <RadioGroup className="flex items-center gap-8">
         {keyframes.map((kf) => (
-          <div
-            key={kf.id}
-            className="w-[80px] h-[80px] border rounded-md flex align-center justify-center"
-          >
-            <KeyframeThumbnail id={kf.id} />
-          </div>
+          <Fragment key={kf.id}>
+            <RadioGroupItem value={kf.id} className={"sr-only"} />
+            <Button
+              variant="outline"
+              className={cn(
+                "w-[80px] h-[80px] border-2 rounded-md flex align-center justify-center",
+                kf.id === selectedKeyframeId ? "border-primary" : "border-muted",
+              )}
+              onClick={() => dispatch(actions.app.selectKeyframe(kf.id))}
+            >
+              <KeyframeThumbnail id={kf.id} />
+            </Button>
+          </Fragment>
         ))}
         <Button
           variant="outline"
@@ -72,7 +84,7 @@ function KeyframesThumbnails(): JSX.Element {
           <Plus />
           Add
         </Button>
-      </div>
+      </RadioGroup>
     </div>
   );
 }
