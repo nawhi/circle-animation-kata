@@ -77,11 +77,7 @@ function KeyframeEditor(): JSX.Element {
         <div className="flex flex-wrap gap-3">
           {shapes.map((shape) => (
             <div
-              draggable
               key={shape.id}
-              onDragStart={(e) => {
-                e.dataTransfer.setData("shape-id", shape.id);
-              }}
               className="border rounded-md aspect-square flex flex-col justify-around align-center text-center w-24 h-24"
             >
               <ShapeThumbnail id={shape.id} />
