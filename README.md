@@ -1,4 +1,4 @@
-# Circle Animation Kata
+# Deleting Circles Kata
 
 ## The Problem
 
