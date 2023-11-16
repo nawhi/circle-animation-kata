@@ -36,10 +36,6 @@ In `apps/redux` the app is implemented using just Redux and Redux Toolkit. This 
 
 You may wish to stick with Redux or migrate to an alternative state management framework.
 
-## Background
-
-This is a de-
-
 ## Credits
 
 The repo structure was created with [Create Turbo](https://turbo.build/repo/docs/getting-started/create-new).
