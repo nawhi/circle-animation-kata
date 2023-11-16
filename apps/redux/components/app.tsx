@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import ShapeEditor from "./shape-editor";
-import KeyframesThumbnails from "./keyframes-thumbnails";
+import Storyboard from "./storyboard";
 import KeyframeEditor from "./keyframe-editor";
 
 /**
@@ -12,7 +12,7 @@ export default function App() {
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[1fr_280px]">
       <div className="flex flex-col">
-        <KeyframesThumbnails />
+        <Storyboard />
         <div className="flex-1 overflow-auto p-4 md:p-6">
           <div className="border shadow-sm rounded-lg h-full w-full">
             <KeyframeEditor />

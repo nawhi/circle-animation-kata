@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import {
   actions,
   selectors,
@@ -7,9 +7,8 @@ import {
 } from "../store/store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { Keyframe, XY } from "@/lib/types";
-import { isShapeId } from "@/lib/types";
-import { CANVAS_STYLE } from "../store/constants";
+import type { Keyframe } from "@/lib/types";
+import { KeyframeThumbnail } from "./keyframe-thumbnail";
 
 function ShapeThumbnail({ id }: { id: string }): JSX.Element | null {
   const shape = useAppSelector((state) =>
@@ -35,61 +34,6 @@ function ShapeThumbnail({ id }: { id: string }): JSX.Element | null {
     </svg>
   );
 }
-interface ShapeOnCanvasProps {
-  cx: number;
-  cy: number;
-  r: number;
-  fill: string;
-  stroke: string;
-  parentRef: React.RefObject<HTMLDivElement>;
-  onPositionChange: (x: number, y: number) => void;
-}
-
-function ShapeOnCanvas({
-  cx,
-  cy,
-  r,
-  fill,
-  stroke,
-  parentRef,
-  onPositionChange,
-}: ShapeOnCanvasProps): JSX.Element {
-  const dragStartRef = useRef<XY>();
-  const xyOfParentRef = () => {
-    const rect = parentRef.current?.getBoundingClientRect();
-    return rect ? { x: rect.left, y: rect.top } : undefined;
-  };
-  return (
-    <div
-      draggable
-      onDragStart={() => {
-        dragStartRef.current = xyOfParentRef();
-      }}
-      onDragEnd={() => {
-        dragStartRef.current = undefined;
-        const rect = xyOfParentRef();
-        if (rect) {
-          onPositionChange(rect.x, rect.y);
-        }
-      }}
-      style={{
-        position: "absolute",
-        top: `${cy - r}px`,
-        left: `${cx - r}px`,
-        width: `${r * 2}px`,
-        height: `${r * 2}px`,
-      }}
-    >
-      <svg
-        className="w-full h-full"
-        viewBox="0 0 1000 1000"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx={500} cy={500} r={200} fill={fill} stroke={stroke} />
-      </svg>
-    </div>
-  );
-}
 
 /**
  * v0 by Vercel.
@@ -98,14 +42,11 @@ function ShapeOnCanvas({
 function KeyframeEditor(): JSX.Element {
   const keyframeId = useAppSelector((state) => state.app.selectedKeyframeId);
   const keyframe = useAppSelector((state) =>
-    keyframeId ? selectors.keyframes.selectById(state, keyframeId) : undefined
+    keyframeId ? selectors.keyframes.selectById(state, keyframeId) : undefined,
   );
   const dispatch = useAppDispatch();
 
   const shapes = useAppSelector(selectors.shapes.selectAll);
-  const shapesEntities = useAppSelector(selectors.shapes.selectEntities);
-
-  const canvasRef = useRef<HTMLDivElement>(null);
 
   if (keyframe === undefined) {
     return <div>Select a keyframe from the thumbnails above to begin.</div>;
@@ -113,7 +54,6 @@ function KeyframeEditor(): JSX.Element {
 
   const update = (changes: Partial<Keyframe>) =>
     dispatch(actions.keyframes.updateOne({ id: keyframe.id, changes }));
-
 
   return (
     <div className="flex gap-12 justify-between items-start p-6">
@@ -145,63 +85,15 @@ function KeyframeEditor(): JSX.Element {
               className="border rounded-md aspect-square flex flex-col justify-around align-center text-center w-24 h-24"
             >
               <ShapeThumbnail id={shape.id} />
-              <span>{shape.displayName}</span>
+              <span className="text-xs text-zinc-700 dark:text-zinc-200 whitespace-nowrap overflow-hidden overflow-ellipsis p-1">
+                {shape.displayName}
+              </span>
             </div>
           ))}
         </div>
       </div>
-      <div
-        ref={canvasRef}
-        className="w-3/4 h-full border rounded-md bg-white dark:bg-zinc-800 relative max-h-[70vh]"
-        style={CANVAS_STYLE}
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const shapeId = e.dataTransfer.getData("shape-id");
-          if (isShapeId(shapeId)) {
-            dispatch(
-              actions.keyframes.addShape({
-                keyframeId: keyframe.id,
-                shapeId,
-                position: { x, y },
-              })
-            );
-          }
-        }}
-      >
-        {keyframe.entries.length === 0 && (
-          <div className="m-4 text-zinc-500 dark:text-zinc-400 w-full h-full flex items-center justify-center">
-            Drag and reposition shapes here...
-          </div>
-        )}
-        {keyframe.entries.map((entry) => {
-          const shape = shapesEntities[entry.shape];
-          return shape ? (
-            <ShapeOnCanvas
-              key={entry.shape}
-              parentRef={canvasRef}
-              cx={entry.center.x}
-              cy={entry.center.y}
-              r={shape.radius}
-              fill={shape.fill}
-              stroke={shape.stroke}
-              onPositionChange={(x, y) =>
-                dispatch(
-                  actions.keyframes.moveShape({
-                    keyframeId: keyframe.id,
-                    shapeId: shape.id,
-                    position: { x, y },
-                  })
-                )
-              }
-            />
-          ) : null;
-        })}
+      <div className="border rounded w-full h-full max-h-[75vh] aspect-square">
+        <KeyframeThumbnail id={keyframe.id} />
       </div>
     </div>
   );

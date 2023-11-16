@@ -24,7 +24,7 @@ function ShapeEditor(): JSX.Element {
   const dispatch = useAppDispatch();
   const shapes = useAppSelector(selectors.shapes.selectAll);
   return (
-    <div className="h-full flex flex-col gap-4 p-4">
+    <div className="h-full max-h-screen overflow-y-auto flex flex-col gap-4 p-4">
       <h4 className="text-lg font-semibold">Shapes</h4>
       {shapes.map((shape) => {
         const update = (changes: Partial<Shape>) =>

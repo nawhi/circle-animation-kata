@@ -10,39 +10,9 @@ import { Plus } from "lucide-react";
 import { chooseNextEntityNumber } from "../store/id";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../store/constants";
+import { KeyframeThumbnail } from "./keyframe-thumbnail";
 
-function KeyframeThumbnail({ id }: { id: string }): JSX.Element {
-  const kf = useAppSelector((state) =>
-    selectors.keyframes.selectById(state, id),
-  );
-  const entries = kf?.entries ?? [];
-  const shapes = useAppSelector(selectors.shapes.selectEntities);
-
-  return (
-    <svg
-      className="w-full h-full"
-      viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {entries.map((entry) => {
-        const shape = shapes[entry.shape];
-        return shape ? (
-          <circle
-            key={shape.id}
-            cx={entry.center.x}
-            cy={entry.center.y}
-            r={shape.radius}
-            fill={shape.fill}
-            stroke={shape.stroke}
-          />
-        ) : null;
-      })}
-    </svg>
-  );
-}
-
-function KeyframesThumbnails(): JSX.Element {
+function Storyboard(): JSX.Element {
   const keyframes = useAppSelector(selectors.keyframes.selectAll);
   const selectedKeyframeId = useAppSelector(
     (state) => state.app.selectedKeyframeId,
@@ -93,4 +63,4 @@ function KeyframesThumbnails(): JSX.Element {
   );
 }
 
-export default KeyframesThumbnails;
+export default Storyboard;
