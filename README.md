@@ -1,9 +1,4 @@
-# Circle Animation Kata (Work in Progress)
-
-## Work in Progress
-This kata isn't ready for use yet. Check back soon.
-
-----------
+# Circle Animation Kata
 
 ## The Problem
 
@@ -17,19 +12,32 @@ This repo has an example animation-creation app which works like this:
 
 - Users can add circles to a global store on the right panel.
 - Users can position the circles on a canvas and add arbitrary numbers of keyframes, which specify an interpolation position for a given time.
-- We imagine there is a render button somewhere that creates the interpolations and produces the finished animation (implementing that is another kata.)
 
-The main behaviour constraint that makes design hard is that when a user deletes a shape from the global store, _it should be automatically removed from all keyframes._
+We imagine there is a render button somewhere that creates the interpolations and produces the finished animation (implementing that is another kata.)
 
-With this in mind, can you architect the app in a way that makes this behaviour automatic?
+## Your Mission
 
-In other words, were we to scale the app to adding other entity relationships in future (e.g. an interpolation mode for a given circle between keyframes), what's the architecture that requires the minimum amount of code to ensure our circles are still cascade-deleted properly from the right hand panel?
+The app as implemented in `apps/redux` has an important issue. When a user deletes a shape from the global store (via the "Delete" button at the bottom of the disclosure on the right hand side), the app crashes.
+
+Your task: Fix the crash!
+
+There are several considerations that form part of the challenge:
+
+- The existing Redux architecture is not really designed for managed entity references between entities.
+- There are no tests and the crash is a bit annoying to reproduce manually (requires several clicks).
+- The app is a single package in a rather unnecessary monorepo (this is actually entirely accidental because I wanted to try turborepo, but now I'm doubling down and claiming it is part of the challenge).
+
+When solving, consider what architectural patterns might make cascade-delete behaviour automatic in the context of this app.
 
 ## Starter Code
 
 In `apps/redux` the app is implemented using just Redux and Redux Toolkit. This is your starting point.
 
 You may wish to stick with Redux or migrate to an alternative state management framework.
+
+## Background
+
+This is a de-
 
 ## Credits
 
