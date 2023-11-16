@@ -7,6 +7,7 @@ import {
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
 import type { Keyframe, KeyframeId, Shape, ShapeId, XY } from "@/lib/types";
+import { PRELOADED_STATE } from "./preloaded-state";
 
 const shapesEntityAdapter = createEntityAdapter<Shape>();
 const keyframesEntityAdapter = createEntityAdapter<Keyframe>({
@@ -75,35 +76,7 @@ const store = configureStore({
     keyframes: keyframesSlice.reducer,
     app: appSlice.reducer,
   },
-  preloadedState: {
-    shapes: {
-      ids: ["shape1"],
-      entities: {
-        shape1: {
-          id: "shape1",
-          displayName: "Shape 1",
-          radius: 50,
-          fill: "#000000",
-          stroke: "#ffffff",
-        },
-      },
-    },
-    keyframes: {
-      ids: ["keyframe1"],
-      entities: {
-        keyframe1: {
-          id: "keyframe1",
-          time: 0,
-          entries: [
-            {
-              shape: "shape1",
-              center: { x: 100, y: 100 },
-            },
-          ],
-        },
-      },
-    },
-  },
+  preloadedState: PRELOADED_STATE,
 });
 
 export const actions = {
