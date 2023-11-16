@@ -48,7 +48,7 @@ const keyframesSlice = createSlice({
       const keyframe = state.entities[payload.keyframeId];
       if (!keyframe) return;
       const entry = keyframe.entries.find(
-        (entry) => entry.shape === payload.shapeId
+        (e) => e.shape === payload.shapeId
       );
       if (entry) {
         entry.center = payload.position;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   actions,
   selectors,
@@ -7,14 +7,13 @@ import {
 } from "../store/store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { Keyframe } from "@/lib/types";
-import { XY, isShapeId } from "@/lib/types";
-import { log } from "console";
-import { CANVAS_ASPECT_RATIO, CANVAS_STYLE } from "../store/constants";
+import type { Keyframe, XY } from "@/lib/types";
+import { isShapeId } from "@/lib/types";
+import { CANVAS_STYLE } from "../store/constants";
 
 function ShapeThumbnail({ id }: { id: string }): JSX.Element | null {
   const shape = useAppSelector((state) =>
-    selectors.shapes.selectById(state, id)
+    selectors.shapes.selectById(state, id),
   );
   if (shape === undefined) {
     return null;
@@ -55,7 +54,7 @@ function ShapeOnCanvas({
   parentRef,
   onPositionChange,
 }: ShapeOnCanvasProps): JSX.Element {
-  const dragStartRef = React.useRef<XY>();
+  const dragStartRef = useRef<XY>();
   const xyOfParentRef = () => {
     const rect = parentRef.current?.getBoundingClientRect();
     return rect ? { x: rect.left, y: rect.top } : undefined;
@@ -63,10 +62,10 @@ function ShapeOnCanvas({
   return (
     <div
       draggable
-      onDragStart={(e) => {
+      onDragStart={() => {
         dragStartRef.current = xyOfParentRef();
       }}
-      onDragEnd={(e) => {
+      onDragEnd={() => {
         dragStartRef.current = undefined;
         const rect = xyOfParentRef();
         if (rect) {
@@ -106,7 +105,7 @@ function KeyframeEditor(): JSX.Element {
   const shapes = useAppSelector(selectors.shapes.selectAll);
   const shapesEntities = useAppSelector(selectors.shapes.selectEntities);
 
-  const canvasRef = React.useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   if (keyframe === undefined) {
     return <div>Select a keyframe from the thumbnails above to begin.</div>;
@@ -180,11 +179,11 @@ function KeyframeEditor(): JSX.Element {
             Drag and reposition shapes here...
           </div>
         )}
-        {keyframe.entries.map((entry, idx) => {
+        {keyframe.entries.map((entry) => {
           const shape = shapesEntities[entry.shape];
           return shape ? (
             <ShapeOnCanvas
-              key={`${entry.shape}-${idx}`}
+              key={entry.shape}
               parentRef={canvasRef}
               cx={entry.center.x}
               cy={entry.center.y}
